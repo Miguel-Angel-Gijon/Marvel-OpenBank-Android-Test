@@ -12,3 +12,12 @@
 /captures
 .externalNativeBuild
 .cxx
+.idea/$CACHE_FILE$
+.idea/.name
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/codeStyles/Project.xml
