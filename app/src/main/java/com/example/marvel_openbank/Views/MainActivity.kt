@@ -1,7 +1,8 @@
-package com.example.marvel_openbank
+package com.example.marvel_openbank.Views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.marvel_openbank.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
