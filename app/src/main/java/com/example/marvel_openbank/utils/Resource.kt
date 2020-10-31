@@ -1,5 +1,7 @@
 package com.example.marvel_openbank.utils
 
+import com.example.marvel_openbank.utils.Resource.Status.*
+
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
 
     enum class Status {
@@ -10,15 +12,15 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
 
     companion object {
         fun <T> success(data: T): Resource<T> {
-            return Resource(Status.SUCCESS, data, null)
+            return Resource(SUCCESS, data, null)
         }
 
         fun <T> error(message: String, data: T? = null): Resource<T> {
-            return Resource(Status.ERROR, data, message)
+            return Resource(ERROR, data, message)
         }
 
         fun <T> loading(data: T? = null): Resource<T> {
-            return Resource(Status.LOADING, data, null)
+            return Resource(LOADING, data, null)
         }
     }
 }

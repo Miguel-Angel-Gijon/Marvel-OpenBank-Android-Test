@@ -3,6 +3,8 @@ package com.example.marvel_openbank.ui.characters
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -11,9 +13,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.marvel_openbank.R
 import com.example.marvel_openbank.databinding.CharactersFragmentBinding
-import com.example.marvel_openbank.utils.Resource
+import com.example.marvel_openbank.utils.Resource.Status.*
 import com.example.marvel_openbank.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +25,7 @@ class CharactersFragment : Fragment(), CharactersAdapter.CharacterItemListener {
 
     private var binding: CharactersFragmentBinding by autoCleared()
     private val viewModel: CharactersViewModel by viewModels()
-    private lateinit var adapter: CharactersAdapter
+    private lateinit var adapterCharacters: CharactersAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,23 +42,37 @@ class CharactersFragment : Fragment(), CharactersAdapter.CharacterItemListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = CharactersAdapter(this)
-        binding.charactersRv.layoutManager = LinearLayoutManager(requireContext())
-        binding.charactersRv.adapter = adapter
+        adapterCharacters = CharactersAdapter(this)
+        with(binding.charactersRv) {
+            layoutManager = LinearLayoutManager(requireContext())
+            this.adapter = adapterCharacters
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    if (!recyclerView.canScrollVertically(1)) {
+                        binding.progressBarMoreItems.visibility = VISIBLE
+                        viewModel.loadCharacters()
+                    }
+                }
+            })
+        }
+
     }
 
     private fun setupObservers() {
         viewModel.characters.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    binding.progressBar.visibility = View.GONE
-                    if (!it.data.isNullOrEmpty()) adapter.setItems(ArrayList(it.data))
-                }
-                Resource.Status.ERROR ->
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+            with(binding) {
+                when (it.status) {
+                    SUCCESS -> {
+                        progressBar.visibility = GONE
+                        progressBarMoreItems.visibility = GONE
+                        if (!it.data.isNullOrEmpty()) adapterCharacters.setItems(ArrayList(it.data))
+                    }
+                    ERROR ->
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
 
-                Resource.Status.LOADING ->
-                    binding.progressBar.visibility = View.VISIBLE
+                    LOADING ->
+                        progressBar.visibility = VISIBLE
+                }
             }
         })
     }

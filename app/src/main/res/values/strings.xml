@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Marvel OpenBank</string>
+    <string name="not_description">"We are sorry. We couldn't find a description for this Marvel character. "</string>
 </resources>

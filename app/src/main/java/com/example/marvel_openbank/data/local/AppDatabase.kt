@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.marvel_openbank.data.entities.Character
 
-@Database(entities = [Character::class], version = 2, exportSchema = false)
+@Database(entities = [Character::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun characterDao(): CharacterDao

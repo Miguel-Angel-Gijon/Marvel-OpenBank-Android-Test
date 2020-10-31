@@ -21,6 +21,4 @@ interface CharacterDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(character: Character)
-
-
 }

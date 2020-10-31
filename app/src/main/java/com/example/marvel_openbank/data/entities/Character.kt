@@ -8,5 +8,22 @@ data class Character(
     @PrimaryKey
     val id: Int,
     val description: String,
-    val name: String
+    val name: String,
+    val path: String,
+    val extension: String
+)
+
+data class CharacterCallResponse(
+    val data: CharacterDataResponse
+)
+
+data class CharacterDataResponse(
+    val results: List<CharacterResponse>
+)
+
+class CharacterResponse(
+    val id: Int,
+    val description: String,
+    val name: String,
+    val thumbnail: ImageCharacter?
 )

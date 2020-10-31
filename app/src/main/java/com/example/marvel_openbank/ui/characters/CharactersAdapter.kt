@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.example.marvel_openbank.data.entities.Character
 import com.example.marvel_openbank.databinding.ItemCharacterBinding
+import com.example.marvel_openbank.utils.SIZE_IMAGE_LIST
+import com.example.marvel_openbank.utils.getURLImage
+import com.example.marvel_openbank.utils.getURLImageList
 
 class CharactersAdapter(private val listener: CharacterItemListener) : RecyclerView.Adapter<CharacterViewHolder>() {
 
@@ -47,11 +52,10 @@ class CharacterViewHolder(private val itemBinding: ItemCharacterBinding, private
     fun bind(item: Character) {
         this.character = item
         itemBinding.name.text = item.name
-        itemBinding.description.text = item.description
-        /*Glide.with(itemBinding.root)
-            .load(item.image)
+        Glide.with(itemBinding.root)
+            .load(getURLImageList(item))
             .transform(CircleCrop())
-            .into(itemBinding.image)*/
+            .into(itemBinding.image)
     }
 
     override fun onClick(v: View?) {

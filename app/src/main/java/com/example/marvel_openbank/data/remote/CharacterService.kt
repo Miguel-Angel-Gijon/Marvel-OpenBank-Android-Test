@@ -1,6 +1,7 @@
 package com.example.marvel_openbank.data.remote
 
 import com.example.marvel_openbank.data.entities.Character
+import com.example.marvel_openbank.data.entities.CharacterCallResponse
 import com.example.marvel_openbank.data.entities.CharacterListResponse
 import com.example.marvel_openbank.utils.MD5
 import retrofit2.Response
@@ -12,16 +13,17 @@ interface CharacterService {
     @GET("v1/public/characters")
     suspend fun getAllCharacters(
         @Query("orderBy") orderBy: String,
+        @Query("offset") offset: Int,
         @Query("ts") ts: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String
     ): Response<CharacterListResponse>
 
-    @GET("v1/public/characters/{characterId}?{path}")
+    @GET("v1/public/characters/{characterId}")
     suspend fun getCharacter(
         @Path("characterId") id: Int,
         @Query("ts") ts: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String
-    ): Response<Character>
+    ): Response<CharacterCallResponse>
 }

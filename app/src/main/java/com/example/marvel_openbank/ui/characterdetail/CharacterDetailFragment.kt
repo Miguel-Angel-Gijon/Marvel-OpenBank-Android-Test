@@ -10,11 +10,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.marvel_openbank.R
 import com.example.marvel_openbank.data.entities.Character
 import com.example.marvel_openbank.databinding.CharacterDetailFragmentBinding
 import com.example.marvel_openbank.utils.Resource
 import com.example.marvel_openbank.utils.autoCleared
+import com.example.marvel_openbank.utils.getURLImage
+import com.example.marvel_openbank.utils.getURLImageDetail
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class CharacterDetailFragment : Fragment() {
@@ -57,13 +62,15 @@ class CharacterDetailFragment : Fragment() {
     }
 
     private fun bindCharacter(character: Character) {
-        binding.name.text = character.name
-        /*binding.species.text = character.species
-        binding.status.text = character.status
-        binding.gender.text = character.gender
+        binding.name.text = character.name.toUpperCase(Locale.getDefault())
+        binding.description.text = character.description.let {
+            if (it.isNotEmpty()) it else getString(
+                R.string.not_description
+            )
+        }
         Glide.with(binding.root)
-            .load(character.image)
-            .transform(CircleCrop())
-            .into(binding.image)*/
+            .load(getURLImageDetail(character))
+            .transform(RoundedCorners(20))
+            .into(binding.image)
     }
 }
