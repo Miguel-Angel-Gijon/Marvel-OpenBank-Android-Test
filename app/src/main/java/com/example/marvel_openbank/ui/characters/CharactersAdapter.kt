@@ -15,7 +15,8 @@ import com.example.marvel_openbank.utils.SIZE_IMAGE_LIST
 import com.example.marvel_openbank.utils.getURLImage
 import com.example.marvel_openbank.utils.getURLImageList
 
-class CharactersAdapter(private val listener: CharacterItemListener) : RecyclerView.Adapter<CharacterViewHolder>() {
+class CharactersAdapter(private val listener: CharacterItemListener) :
+    RecyclerView.Adapter<CharacterViewHolder>() {
 
     interface CharacterItemListener {
         fun onClickedCharacter(characterId: Int)
@@ -25,21 +26,31 @@ class CharactersAdapter(private val listener: CharacterItemListener) : RecyclerV
 
     fun setItems(items: ArrayList<Character>) {
         this.items.clear()
-        this.items.addAll(items)
+        this.items.addAll(items.sortedWith(compareBy { it.name }))
         notifyDataSetChanged()
     }
 
+    fun updateItems(itemsNew: List<Character>) {
+        items.addAll(itemsNew)
+        setItems(items)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        val binding: ItemCharacterBinding = ItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding: ItemCharacterBinding =
+            ItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CharacterViewHolder(binding, listener)
     }
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) = holder.bind(items[position])
+    override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) =
+        holder.bind(items[position])
 }
 
-class CharacterViewHolder(private val itemBinding: ItemCharacterBinding, private val listener: CharactersAdapter.CharacterItemListener) : RecyclerView.ViewHolder(itemBinding.root),
+class CharacterViewHolder(
+    private val itemBinding: ItemCharacterBinding,
+    private val listener: CharactersAdapter.CharacterItemListener
+) : RecyclerView.ViewHolder(itemBinding.root),
     View.OnClickListener {
 
     private lateinit var character: Character

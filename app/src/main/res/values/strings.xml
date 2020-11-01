@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Marvel OpenBank</string>
+
+    <!--Error Texts-->
     <string name="not_description">"We are sorry. We couldn't find a description for this Marvel character. "</string>
+    <string name="not_get_more_items">There was a problem getting more results.</string>
+
+    <!--Menu-->
+    <string name="search">Search</string>
+
+    <!--Fragments Titles-->
+    <string name="fragment_characters_title">Charcaters Marvel</string>
+    <string name="fragment_character_details_title">Character Details</string>
 </resources>

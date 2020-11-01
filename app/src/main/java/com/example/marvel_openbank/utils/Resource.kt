@@ -7,12 +7,17 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
     enum class Status {
         SUCCESS,
         ERROR,
-        LOADING
+        LOADING,
+        SUCCESS_UPDATE
     }
 
     companion object {
         fun <T> success(data: T): Resource<T> {
             return Resource(SUCCESS, data, null)
+        }
+
+        fun <T> successUpdate(data: T): Resource<T> {
+            return Resource(SUCCESS_UPDATE, data, null)
         }
 
         fun <T> error(message: String, data: T? = null): Resource<T> {

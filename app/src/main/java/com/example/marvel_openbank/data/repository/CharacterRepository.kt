@@ -1,7 +1,12 @@
 package com.example.marvel_openbank.data.repository
 
+import android.content.res.Resources
+import com.example.marvel_openbank.R
+import com.example.marvel_openbank.data.entities.Character
+import com.example.marvel_openbank.data.entities.CharacterListResponse
 import com.example.marvel_openbank.data.local.CharacterDao
 import com.example.marvel_openbank.data.remote.CharacterRemoteDataSource
+import com.example.marvel_openbank.utils.Resource
 import com.example.marvel_openbank.utils.TransformersDao
 import com.example.marvel_openbank.utils.performGetOperation
 import javax.inject.Inject
@@ -12,7 +17,6 @@ class CharacterRepository @Inject constructor(
 ) {
 
     private val transformersDao: TransformersDao = TransformersDao()
-    private var offset: Int = 0
 
     fun getCharacter(id: Int) = performGetOperation(
         databaseQuery = { localDataSource.getCharacter(id) },
@@ -22,13 +26,20 @@ class CharacterRepository @Inject constructor(
         }
     )
 
-    fun getCharacters(recall: Boolean = false) = performGetOperation(
+    fun getCharacters() = performGetOperation(
         databaseQuery = { localDataSource.getAllCharacters() },
-        networkCall = { remoteDataSource.getCharacters(offset) },
+        networkCall = { remoteDataSource.getCharacters() },
         saveCallResult = {
-            offset = it.data.count
             localDataSource.insertAll(transformersDao.transformList(it.data))
-        },
-        reCall = recall
+        }
     )
+
+    suspend fun getMoreCharacters(size: Int): Resource<List<Character>>? {
+        val remoteSource = remoteDataSource.getCharacters(size).data?.data?.let {
+            localDataSource.insertAll(transformersDao.transformList(it))
+            Resource.successUpdate(transformersDao.transformList(it))
+        }
+        return remoteSource ?: Resource.error(Resources.getSystem().getString(R.string.not_get_more_items), null
+        )
+    }
 }
