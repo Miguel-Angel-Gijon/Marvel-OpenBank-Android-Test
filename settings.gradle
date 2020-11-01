@@ -1,2 +1,2 @@
+rootProject.name='RickAndMorty'
 include ':app'
-rootProject.name = "Marvel-OpenBank"
