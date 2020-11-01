@@ -16,4 +16,8 @@
         <item name="android:textColorSecondary">#EEEEEE</item>
     </style>
 
+    <declare-styleable name="ProgessBarCustom">
+        <attr name="colorHint" format="color" />
+    </declare-styleable>
+
 </resources>
