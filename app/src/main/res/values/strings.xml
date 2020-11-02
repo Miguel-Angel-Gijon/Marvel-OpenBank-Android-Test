@@ -7,6 +7,8 @@
 
     <!--Menu-->
     <string name="search">Search</string>
+    <string name="close_search">close search</string>
+
 
     <!--Fragments Titles-->
     <string name="fragment_characters_title">Charcaters Marvel</string>

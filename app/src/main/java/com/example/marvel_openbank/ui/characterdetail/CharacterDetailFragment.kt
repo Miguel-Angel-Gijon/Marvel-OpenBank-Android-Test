@@ -14,10 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.marvel_openbank.R
 import com.example.marvel_openbank.data.entities.Character
 import com.example.marvel_openbank.databinding.CharacterDetailFragmentBinding
-import com.example.marvel_openbank.utils.Resource
-import com.example.marvel_openbank.utils.autoCleared
-import com.example.marvel_openbank.utils.getURLImage
-import com.example.marvel_openbank.utils.getURLImageDetail
+import com.example.marvel_openbank.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -39,6 +36,14 @@ class CharacterDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getInt("id")?.let { viewModel.start(it) }
         setupObservers()
+        setupComponents()
+    }
+
+    private fun setupComponents() {
+        context?.let {
+            binding.progressBar.setColorHint(getColorVersions(R.color.white, context))
+            binding.progressBarImage.setColorHint(getColorVersions(R.color.white, context))
+        }
     }
 
     private fun setupObservers() {
@@ -57,6 +62,7 @@ class CharacterDetailFragment : Fragment() {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.characterCl.visibility = View.GONE
                 }
+                Resource.Status.SUCCESS_UPDATE -> {}
             }
         })
     }

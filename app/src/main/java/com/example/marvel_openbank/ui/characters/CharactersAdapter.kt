@@ -23,10 +23,15 @@ class CharactersAdapter(private val listener: CharacterItemListener) :
     }
 
     private val items = ArrayList<Character>()
+    private val itemsAux = ArrayList<Character>()
 
     fun setItems(items: ArrayList<Character>) {
         this.items.clear()
         this.items.addAll(items.sortedWith(compareBy { it.name }))
+        if (itemsAux.size < items.size) {
+            itemsAux.clear()
+            itemsAux.addAll(items)
+        }
         notifyDataSetChanged()
     }
 
@@ -45,6 +50,19 @@ class CharactersAdapter(private val listener: CharacterItemListener) :
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) =
         holder.bind(items[position])
+
+    fun filteritems(newText: String?) {
+        newText?.let {
+            val itemsFilters: ArrayList<Character> = arrayListOf()
+            itemsFilters.addAll(itemsAux.filter { character ->
+                character.name.contains(
+                    newText,
+                    true
+                )
+            })
+            setItems(itemsFilters)
+        }
+    }
 }
 
 class CharacterViewHolder(

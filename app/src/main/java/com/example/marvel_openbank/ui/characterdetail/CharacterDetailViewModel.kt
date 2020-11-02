@@ -10,10 +10,10 @@ import com.example.marvel_openbank.data.repository.CharacterRepository
 import com.example.marvel_openbank.utils.Resource
 
 class CharacterDetailViewModel @ViewModelInject constructor(
-    private val repository: CharacterRepository
+    val repository: CharacterRepository
 ) : ViewModel() {
 
-    private val _id = MutableLiveData<Int>()
+    val _id = MutableLiveData<Int>()
 
     private val _character = _id.switchMap { id ->
         repository.getCharacter(id)

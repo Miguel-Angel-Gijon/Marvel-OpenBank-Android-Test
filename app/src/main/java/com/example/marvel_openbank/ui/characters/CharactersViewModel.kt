@@ -1,11 +1,13 @@
 package com.example.marvel_openbank.ui.characters
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.marvel_openbank.data.entities.Character
 import com.example.marvel_openbank.data.repository.CharacterRepository
 import com.example.marvel_openbank.utils.Resource
-import com.example.marvel_openbank.data.entities.Character
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
