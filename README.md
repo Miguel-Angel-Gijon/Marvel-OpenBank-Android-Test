@@ -5,3 +5,18 @@
 Android app that shows a list of Marvel comic characters obtained from the web https://developer.marvel.com/.
 
 # Functioning
+
+Upon accessing the app, it will show us a loading presentation with the Marvel company logo and after a few seconds we will access a list with a heading named "Characters Marvel".
+
+#### Characters Marvel screen
+
+In the header we also have an icon with a magnifying glass that allows us to discover a text bar to make a search within the list.
+The list shows a round image for each character, their name on the right and an arrow pointing to the right that indicates more information.
+The search is by content and is activated dynamically, so as we write we can see the results live.
+Another feature of this first screen is that as we go down the list we will load more items that will be stored for the next time we open the app.
+
+#### Character Detail screen
+
+On this screen we have a header with the title "Character Detail" and an arrow to return to the previous screen. In the rest of the screen we will see the name of the character above an image that will load if it is not already, under said image the last time that character appeared in a comic and a description of it below.
+
+
