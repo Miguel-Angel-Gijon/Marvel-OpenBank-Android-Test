@@ -117,7 +117,7 @@ The app is developed in Kotlin language, using the MVVM pattern.
 
 ### Functioning
 
-The logic begins with the viewmodel classes declared in their corresponding fragments. These viewmodels are injected with the CharacterRepository.kt class, which is the one that contains the corresponding functions for obtaining data, both remotely and locally, and for sending the database to be updated.
+The logic begins with the viewmodel classes declared in their corresponding fragments. These viewmodels are injected with the [CharacterRepository.kt] class, which is the one that contains the corresponding functions for obtaining data, both remotely and locally, and for sending the database to be updated.
 
 ```sh
  class CharacterRepository @Inject constructor(
@@ -153,7 +153,7 @@ The logic begins with the viewmodel classes declared in their corresponding frag
     }
 }
 ```
-As we can see, the getCharacter and getCharacters functions receive an object from a function called performGetOperation found in the DataAccessStrategy.kt class, which is responsible for maintaining a strategy as follows:
+As we can see, the getCharacter and getCharacters functions receive an object from a function called performGetOperation found in the [DataAccessStrategy.kt] class, which is responsible for maintaining a strategy as follows:
 
 ```sh
 fun <T, A> performGetOperation(
@@ -212,7 +212,7 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
 }
 ```
 
-The response of the coroutine is of type Live <Resource <T>>, and it is this Resource class that wraps these responses that can be of various types depending on the state of the same, so later we can observe the LiveData object that is in our corresponding viewmodel from the fragment.
+The response of the coroutine is of type Live <Resource<T>>, and it is this Resource class that wraps these responses that can be of various types depending on the state of the same, so later we can observe the LiveData object that is in our corresponding viewmodel from the fragment.
 
 ```
         viewModel.characters.observe(viewLifecycleOwner, Observer {
@@ -241,9 +241,9 @@ The response of the coroutine is of type Live <Resource <T>>, and it is this Res
 ```
 
 We can know if we have to report an error, reload the adapter or show or hide the loading.
-With this same system as our list, it is loaded from 20 to 20 items remotely so as not to stop the operation of the app and maintain a pleasant user experience; From the fragment of CharactersFragment.kt we control when our list reaches the end, to re-launch the call to the viewmodel and make it redo the data update process from the server but with an "offset" that is controlled from the call and it will be the total of elements that we already have.
+With this same system as our list, it is loaded from 20 to 20 items remotely so as not to stop the operation of the app and maintain a pleasant user experience; From the fragment of [CharactersFragment.kt] we control when our list reaches the end, to re-launch the call to the viewmodel and make it redo the data update process from the server but with an "offset" that is controlled from the call and it will be the total of elements that we already have.
 
-For the calls to the Api we have a bridge class between the retrofit call model and our viewmodel CharacterRemoteDataSource.kt. This class provides us with two getters, one for the list and one for a specific character.
+For the calls to the Api we have a bridge class between the retrofit call model and our viewmodel [CharacterRemoteDataSource.kt]. This class provides us with two getters, one for the list and one for a specific character.
 
 ```
 class CharacterRemoteDataSource @Inject constructor(
