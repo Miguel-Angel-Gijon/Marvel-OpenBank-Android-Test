@@ -117,6 +117,135 @@ The app is developed in Kotlin language, using the MVVM pattern.
 
 ### Functioning
 
+The logic begins with the viewmodel classes declared in their corresponding fragments. These viewmodels are injected with the CharacterRepository.kt class, which is the one that contains the corresponding functions for obtaining data, both remotely and locally, and for sending the database to be updated.
+
+```sh
+ class CharacterRepository @Inject constructor(
+    private val remoteDataSource: CharacterRemoteDataSource,
+    private val localDataSource: CharacterDao
+) {
+
+    private val transformersDao: TransformersDao = TransformersDao()
+
+    fun getCharacter(id: Int) = performGetOperation(
+        databaseQuery = { localDataSource.getCharacter(id) },
+        networkCall = { remoteDataSource.getCharacter(id) },
+        saveCallResult = {
+            localDataSource.insert(transformersDao.transformCharacter(it.data.results[0]))
+        }
+    )
+
+    fun getCharacters() = performGetOperation(
+        databaseQuery = { localDataSource.getAllCharacters() },
+        networkCall = { remoteDataSource.getCharacters() },
+        saveCallResult = {
+            localDataSource.insertAll(transformersDao.transformList(it.data))
+        }
+    )
+
+    suspend fun getMoreCharacters(size: Int): Resource<List<Character>>? {
+        val remoteSource = remoteDataSource.getCharacters(size).data?.data?.let {
+            localDataSource.insertAll(transformersDao.transformList(it))
+            Resource.successUpdate(transformersDao.transformList(it))
+        }
+        return remoteSource ?: Resource.error(Resources.getSystem().getString(R.string.not_get_more_items), null
+        )
+    }
+}
+```
+As we can see, the getCharacter and getCharacters functions receive an object from a function called performGetOperation found in the DataAccessStrategy.kt class, which is responsible for maintaining a strategy as follows:
+
+```sh
+fun <T, A> performGetOperation(
+    databaseQuery: () -> LiveData<T>,
+    networkCall: suspend () -> Resource<A>,
+    saveCallResult: suspend (A) -> Unit
+): LiveData<Resource<T>> =
+    liveData(Dispatchers.IO) {
+        emit(Resource.loading())
+        val source = databaseQuery.invoke().map { Resource.success(it) }
+        emitSource(source)
+        val responseStatus = networkCall.invoke()
+        when (responseStatus.status) {
+            SUCCESS -> {
+                saveCallResult(responseStatus.data!!)
+            }
+            ERROR -> {
+                emit(Resource.error(responseStatus.message!!))
+                emitSource(source)
+            }
+            LOADING -> {
+            }
+        }
+    }
+```
+
+Through a coroutine livedata and in a different thread from the main one, it will obtain and load the data that exists in the database and send them to be the ones obtained, but on the other hand it will try to make a call to the Api and said The call will return its own state, that if it is SUCCESS it will call the function that we have passed to it as in charge of storing the data and if it is ERROR it will return the data from the database previously obtained.
+
+```sh
+data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
+
+    enum class Status {
+        SUCCESS,
+        ERROR,
+        LOADING,
+        SUCCESS_UPDATE
+    }
+
+    companion object {
+        fun <T> success(data: T): Resource<T> {
+            return Resource(SUCCESS, data, null)
+        }
+
+        fun <T> successUpdate(data: T): Resource<T> {
+            return Resource(SUCCESS_UPDATE, data, null)
+        }
+
+        fun <T> error(message: String, data: T? = null): Resource<T> {
+            return Resource(ERROR, data, message)
+        }
+
+        fun <T> loading(data: T? = null): Resource<T> {
+            return Resource(LOADING, data, null)
+        }
+    }
+}
+```
+
+The response of the coroutine is of type Live <Resource <T>>, and it is this Resource class that wraps these responses that can be of various types depending on the state of the same, so later we can observe the LiveData object that is in our corresponding viewmodel from the fragment.
+
+```
+        viewModel.characters.observe(viewLifecycleOwner, Observer {
+            with(binding) {
+                when (it.status) {
+                    SUCCESS -> {
+                        progressBar.visibility = GONE
+                        if (!it.data.isNullOrEmpty()) adapterCharacters.setItems(ArrayList(it.data))
+                    }
+                    ERROR -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        progressBar.visibility = GONE
+                        progressBarMoreItems.visibility = GONE
+                    }
+                    SUCCESS_UPDATE -> {
+                        progressBarMoreItems.visibility = GONE
+                        if (!it.data.isNullOrEmpty())
+                            adapterCharacters.updateItems(it.data)
+                        closeSearch()
+                    }
+                    LOADING ->
+                        progressBar.visibility = VISIBLE
+                }
+            }
+        })
+```
+
+We can know if we have to report an error, reload the adapter or show or hide the loading.
+With this same system as our list, it is loaded from 20 to 20 items remotely so as not to stop the operation of the app and maintain a pleasant user experience; From the fragment of CharactersFragment.kt we control when our list reaches the end, to re-launch the call to the viewmodel and make it redo the data update process from the server but with an "offset" that is controlled from the call and it will be the total of elements that we already have.
+
+
+
+[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
 
    [CharactersFragment.kt]: <https://github.com/Miguel-Angel-Gijon/Marvel-OpenBank-Android-Test/blob/master/app/src/main/java/com/example/marvel_openbank/ui/characters/CharactersFragment.kt>
