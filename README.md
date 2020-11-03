@@ -25,16 +25,16 @@ The app is developed in Kotlin language, using the MVVM pattern.
 
 ##### The project is structured as follows:
 //////////////////////////////////////////
->---> Data Folder (It contains everything related to the data and its obtaining)
-> -------> Entities Folder (Model for db and network)
-> -------> Local Folder (Tools for configure and use db)
-> -------> Remote Folder (Tools for calls to network)
-> -------> Repository Folder (Bridge between local and remote use)
->---> Di Folder (It contains the configuration for dependency injection)
->---> Ui Folder (It contains the activity main, fragments, adaptors and viewmodels)
-> -------> CharacterDetail Folder (For screen Character detail)
-> -------> Character Folder (For screen Characters Marvel)
->---> Utils Folder (It contains generic tools for app)
+---> Data Folder (It contains everything related to the data and its obtaining)
+--------> Entities Folder (Model for db and network)
+--------> Local Folder (Tools for configure and use db)
+-------> Remote Folder (Tools for calls to network)
+-------> Repository Folder (Bridge between local and remote use)
+---> Di Folder (It contains the configuration for dependency injection)
+---> Ui Folder (It contains the activity main, fragments, adaptors and viewmodels)
+-------> CharacterDetail Folder (For screen Character detail)
+-------> Character Folder (For screen Characters Marvel)
+---> Utils Folder (It contains generic tools for app)
 
 
 The classes that make up the views section are:
