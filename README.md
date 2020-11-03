@@ -243,7 +243,66 @@ The response of the coroutine is of type Live <Resource <T>>, and it is this Res
 We can know if we have to report an error, reload the adapter or show or hide the loading.
 With this same system as our list, it is loaded from 20 to 20 items remotely so as not to stop the operation of the app and maintain a pleasant user experience; From the fragment of CharactersFragment.kt we control when our list reaches the end, to re-launch the call to the viewmodel and make it redo the data update process from the server but with an "offset" that is controlled from the call and it will be the total of elements that we already have.
 
+For the calls to the Api we have a bridge class between the retrofit call model and our viewmodel CharacterRemoteDataSource.kt. This class provides us with two getters, one for the list and one for a specific character.
 
+```
+class CharacterRemoteDataSource @Inject constructor(
+    private val characterService: CharacterService
+) : BaseDataSource() {
+
+    suspend fun getCharacters(offset : Int = 0) = getResult {
+        val md5 = MD5()
+        md5.getHashComplete()
+        val hash: String = md5.hash ?: ""
+        characterService.getAllCharacters("name", offset, md5.timestamp, API_KEY, hash)
+    }
+
+    suspend fun getCharacter(id: Int) = getResult {
+        val md5 = MD5()
+        md5.getHashComplete()
+        val hash: String = md5.hash ?: ""
+        characterService.getCharacter(id, md5.timestamp, API_KEY, hash)
+    }
+}
+```
+
+The peculiarity of the marvel API for developers that as such, I had to create an account to use it. This account provides us with a PRIVATE KEY and an API KEY, which in combination with a TIMESTAMP of the moment of the call, we will obtain a unique hash that will give us access to the calls and their corresponding responses. This hash is generated with the MD5 utility class.
+
+```
+class MD5() {
+
+    lateinit var timestamp: String
+    var hash: String? = null
+
+    lateinit var apikey: String
+
+
+    private fun getMD5EncryptedString(encTarget: String): String? {
+        var mdEnc: MessageDigest? = null
+        try {
+            mdEnc = MessageDigest.getInstance("MD5")
+        } catch (e: NoSuchAlgorithmException) {
+            println("Exception while encrypting to md5")
+            e.printStackTrace()
+        } // Encryption algorithm
+        mdEnc?.update(encTarget.toByteArray(), 0, encTarget.length)
+        var md5: String = BigInteger(1, mdEnc?.digest()).toString(16)
+        while (md5.length < 32) {
+            md5 = "0$md5"
+        }
+        return md5
+    }
+
+    fun getHashComplete() {
+        timestamp = Timestamp(System.currentTimeMillis()).time.toString()
+        hash = getMD5EncryptedString("$timestamp$PRIVATE_KEY$API_KEY")
+    }
+    
+}
+```
+
+So far all the explanation.
+I leave a link from TalentoMobile, partner of said development.
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
