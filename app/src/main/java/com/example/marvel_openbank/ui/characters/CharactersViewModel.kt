@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class CharactersViewModel @ViewModelInject constructor(
-    private val repository: CharacterRepository
+    val repository: CharacterRepository
 ) : ViewModel() {
 
     var characters: LiveData<Resource<List<Character>>> = repository.getCharacters()

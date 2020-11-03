@@ -1,10 +1,10 @@
 package com.example.marvel_openbank.utils
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
-import com.example.marvel_openbank.utils.Resource.Status.*
+import com.example.marvel_openbank.utils.Resource.Status.ERROR
+import com.example.marvel_openbank.utils.Resource.Status.SUCCESS
 import kotlinx.coroutines.Dispatchers
 
 fun <T, A> performGetOperation(
@@ -25,7 +25,7 @@ fun <T, A> performGetOperation(
                 emit(Resource.error(responseStatus.message!!))
                 emitSource(source)
             }
-            LOADING -> {
+            else -> {
             }
         }
     }

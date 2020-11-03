@@ -1,18 +1,18 @@
 package com.example.marvel_openbank.ui.characters
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.example.marvel_openbank.R
 import com.example.marvel_openbank.data.entities.Character
 import com.example.marvel_openbank.databinding.ItemCharacterBinding
-import com.example.marvel_openbank.utils.SIZE_IMAGE_LIST
-import com.example.marvel_openbank.utils.getURLImage
+import com.example.marvel_openbank.utils.getDateFormated
 import com.example.marvel_openbank.utils.getURLImageList
 
 class CharactersAdapter(private val listener: CharacterItemListener) :
