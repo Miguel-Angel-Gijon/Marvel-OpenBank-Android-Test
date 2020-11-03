@@ -32,17 +32,17 @@ The app is developed in Kotlin language, using the MVVM pattern.
 
 --------> Local Folder (Tools for configure and use db)
 
--------> Remote Folder (Tools for calls to network)
+--------> Remote Folder (Tools for calls to network)
 
--------> Repository Folder (Bridge between local and remote use)
+--------> Repository Folder (Bridge between local and remote use)
 
 ---> Di Folder (It contains the configuration for dependency injection)
 
 ---> Ui Folder (It contains the activity main, fragments, adaptors and viewmodels)
 
--------> CharacterDetail Folder (For screen Character detail)
+--------> CharacterDetail Folder (For screen Character detail)
 
--------> Character Folder (For screen Characters Marvel)
+--------> Character Folder (For screen Characters Marvel)
 
 ---> Utils Folder (It contains generic tools for app)
 
