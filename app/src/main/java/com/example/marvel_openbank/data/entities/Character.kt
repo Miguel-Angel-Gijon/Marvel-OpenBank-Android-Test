@@ -10,7 +10,8 @@ data class Character(
     val description: String,
     val name: String,
     val path: String,
-    val extension: String
+    val extension: String,
+    val date : String
 )
 
 data class CharacterCallResponse(
@@ -25,5 +26,7 @@ class CharacterResponse(
     val id: Int,
     val description: String,
     val name: String,
-    val thumbnail: ImageCharacter?
+    val thumbnail: ImageCharacter?,
+    val modified : String
 )
+

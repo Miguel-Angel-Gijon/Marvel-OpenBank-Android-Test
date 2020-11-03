@@ -22,7 +22,8 @@ class TransformersDao {
             characterResponse.description,
             characterResponse.name,
             characterResponse.thumbnail?.path ?: "",
-            characterResponse.thumbnail?.extension ?: ""
+            characterResponse.thumbnail?.extension ?: "",
+            characterResponse.modified
         )
 
 }

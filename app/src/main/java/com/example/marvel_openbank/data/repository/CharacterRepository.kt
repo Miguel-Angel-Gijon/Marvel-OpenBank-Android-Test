@@ -3,7 +3,6 @@ package com.example.marvel_openbank.data.repository
 import android.content.res.Resources
 import com.example.marvel_openbank.R
 import com.example.marvel_openbank.data.entities.Character
-import com.example.marvel_openbank.data.entities.CharacterListResponse
 import com.example.marvel_openbank.data.local.CharacterDao
 import com.example.marvel_openbank.data.remote.CharacterRemoteDataSource
 import com.example.marvel_openbank.utils.Resource
@@ -39,7 +38,8 @@ class CharacterRepository @Inject constructor(
             localDataSource.insertAll(transformersDao.transformList(it))
             Resource.successUpdate(transformersDao.transformList(it))
         }
-        return remoteSource ?: Resource.error(Resources.getSystem().getString(R.string.not_get_more_items), null
+        return remoteSource ?: Resource.error(
+            Resources.getSystem().getString(R.string.not_get_more_items), null
         )
     }
 }

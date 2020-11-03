@@ -13,4 +13,5 @@
     <!--Fragments Titles-->
     <string name="fragment_characters_title">Charcaters Marvel</string>
     <string name="fragment_character_details_title">Character Details</string>
+    <string name="last_date">"Last date modified: %1$s"</string>
 </resources>

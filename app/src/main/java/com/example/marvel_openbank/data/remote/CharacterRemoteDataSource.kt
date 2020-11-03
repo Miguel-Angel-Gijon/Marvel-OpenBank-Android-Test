@@ -8,7 +8,7 @@ class CharacterRemoteDataSource @Inject constructor(
     private val characterService: CharacterService
 ) : BaseDataSource() {
 
-    suspend fun getCharacters(offset : Int = 0) = getResult {
+    suspend fun getCharacters(offset: Int = 0) = getResult {
         val md5 = MD5()
         md5.getHashComplete()
         val hash: String = md5.hash ?: ""

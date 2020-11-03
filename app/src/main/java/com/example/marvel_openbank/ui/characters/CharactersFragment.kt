@@ -25,7 +25,8 @@ import com.example.marvel_openbank.utils.autoCleared
 import com.example.marvel_openbank.utils.getColorVersions
 import com.example.marvel_openbank.utils.setColorHint
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint

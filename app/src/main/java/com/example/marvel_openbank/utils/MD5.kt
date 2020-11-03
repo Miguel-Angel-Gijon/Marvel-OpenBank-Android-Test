@@ -7,7 +7,6 @@ import java.sql.Timestamp
 
 class MD5() {
 
-
     lateinit var timestamp: String
     var hash: String? = null
 
@@ -34,4 +33,5 @@ class MD5() {
         timestamp = Timestamp(System.currentTimeMillis()).time.toString()
         hash = getMD5EncryptedString("$timestamp$PRIVATE_KEY$API_KEY")
     }
+
 }

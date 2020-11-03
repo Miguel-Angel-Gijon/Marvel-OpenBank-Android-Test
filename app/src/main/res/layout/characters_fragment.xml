@@ -40,8 +40,10 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/progress_bar_more_items"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_view_container" />
+            app:layout_constraintTop_toBottomOf="@id/search_view_container"
+            tools:listitem="@layout/item_character" />
 
         <ProgressBar
             android:id="@+id/progress_bar_more_items"
@@ -78,7 +80,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="@color/colorPrimary"
-            android:visibility="visible">
+            android:visibility="visible"
+            tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
